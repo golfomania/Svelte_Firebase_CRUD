@@ -1,6 +1,8 @@
 <script>
 	import { onMount } from 'svelte';
 	import { auth, db } from '../lib/firebase/firebase.js';
+	import { doc, getDoc, setDoc } from 'firebase/firestore';
+	import { get } from 'svelte/store';
 
 	const nonAuthRoutes = ['/', '/product'];
 	onMount(() => {
@@ -15,6 +17,22 @@
 
 			if (user && currentPath === '/') {
 				window.location.href = '/dashboard';
+				return;
+			}
+
+			const docRef = doc(db, 'users', user.uid);
+			const docSnap = await getDoc(docRef);
+
+			if (!docSnap.exists()) {
+				userRef = doc(db, 'users', user.uid);
+				await setDoc(
+					userRef,
+					{
+						email: user.email,
+						todos: []
+					},
+					{ merge: true }
+				);
 				return;
 			}
 		});
