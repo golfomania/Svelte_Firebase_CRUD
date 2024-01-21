@@ -1,45 +1,69 @@
 <script>
+	import { authHandlers } from '../store/store';
+
 	let email = '';
 	let password = '';
-	let confirmPassword = '';
+	let confirmPass = '';
 	let error = false;
 	let register = false;
+	let authenticating = false;
 
-	function handleAuthenticate() {
-		if (!email || !password || (register && !confirmPassword)) {
-			alert('Please fill out all fields');
+	async function handleAuthenticate() {
+		if (authenticating) {
+			return;
+		}
+		if (!email || !password || (register && !confirmPass)) {
 			error = true;
 			return;
 		}
+		authenticating = true;
+
+		try {
+			if (!register) {
+				await authHandlers.login(email, password);
+			} else {
+				await authHandlers.signup(email, password);
+			}
+		} catch (err) {
+			console.log('There was an auth error', err);
+			error = true;
+			authenticating = false;
+		}
 	}
 
-	const handleRegister = () => {
+	function handleRegister() {
 		register = !register;
-	};
+	}
 </script>
 
 <div class="authContainer">
 	<form>
 		<h1>{register ? 'Register' : 'Login'}</h1>
 		{#if error}
-			<p class="error">Given information not correct</p>
+			<p class="error">The information you have entered is not correct</p>
 		{/if}
-		<label for="">
-			<p class={email ? ' above' : ' center'}>E-Mail</p>
-			<input bind:value={email} type="email" placeholder="E-Mail" />
+		<label>
+			<p class={email ? ' above' : ' center'}>Email</p>
+			<input bind:value={email} type="email" placeholder="Email" />
 		</label>
-		<label for="">
+		<label>
 			<p class={password ? ' above' : ' center'}>Password</p>
 			<input bind:value={password} type="password" placeholder="Password" />
 		</label>
 		{#if register}
-			<label for="">
-				<p class={confirmPassword ? ' above' : ' center'}>Confirm Password</p>
-				<input bind:value={confirmPassword} type="password" placeholder="Confirm Password" />
+			<label>
+				<p class={confirmPass ? ' above' : ' center'}>Confirm Password</p>
+				<input bind:value={confirmPass} type="password" placeholder="Confirm Password" />
 			</label>
 		{/if}
 
-		<button type="button">Submit</button>
+		<button on:click={handleAuthenticate} type="button" class="submitBtn">
+			{#if authenticating}
+				<i class="fa-solid fa-spinner loadingSpinner" />
+			{:else}
+				Submit
+			{/if}
+		</button>
 	</form>
 	<div class="options">
 		<p>Or</p>

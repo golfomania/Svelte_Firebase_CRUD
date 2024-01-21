@@ -1,12 +1,13 @@
 <script>
 	import { onMount } from 'svelte';
-	import { auth, db } from '../lib/firebase/firebase.js';
-	import { doc, getDoc, setDoc } from 'firebase/firestore';
-	import { get } from 'svelte/store';
+	import { auth, db } from '../lib/firebase/firebase';
+	import { getDoc, doc, setDoc } from 'firebase/firestore';
+	import { authStore } from '../store/store';
 
-	const nonAuthRoutes = ['/', '/product'];
+	const nonAuthRoutes = ['/', 'product'];
+
 	onMount(() => {
-		console.log('layout mounted');
+		console.log('Mounting');
 		const unsubscribe = auth.onAuthStateChanged(async (user) => {
 			const currentPath = window.location.pathname;
 
@@ -20,22 +21,37 @@
 				return;
 			}
 
-			const docRef = doc(db, 'users', user.uid);
-			const docSnap = await getDoc(docRef);
-
-			if (!docSnap.exists()) {
-				userRef = doc(db, 'users', user.uid);
-				await setDoc(
-					userRef,
-					{
-						email: user.email,
-						todos: []
-					},
-					{ merge: true }
-				);
+			if (!user) {
 				return;
 			}
+
+			let dataToSetToStore;
+			const docRef = doc(db, 'users', user.uid);
+			const docSnap = await getDoc(docRef);
+			if (!docSnap.exists()) {
+				console.log('Creating User');
+				const userRef = doc(db, 'users', user.uid);
+				dataToSetToStore = {
+					email: user.email,
+					todos: []
+				};
+				await setDoc(userRef, dataToSetToStore, { merge: true });
+			} else {
+				console.log('Fetching User');
+				const userData = docSnap.data();
+				dataToSetToStore = userData;
+			}
+
+			authStore.update((curr) => {
+				return {
+					...curr,
+					user,
+					data: dataToSetToStore,
+					loading: false
+				};
+			});
 		});
+		return unsubscribe;
 	});
 </script>
 
