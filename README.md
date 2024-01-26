@@ -16,3 +16,6 @@ https://console.firebase.google.com/project/sveltkit-crud-demo/settings/general
 https://www.youtube.com/watch?v=8NlUTFppJkU&t
 
 ### Firebase project
+
+name: sveltekit-auth  
+https://console.firebase.google.com/project/sveltekit-auth-aac32/overview
