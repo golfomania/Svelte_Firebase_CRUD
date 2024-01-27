@@ -1,8 +1,7 @@
-# Svelte_Firebase_CRUD
+# Sveltekit & Firebase
 
-CRUD API demo app with SvelteKit + Firebase
 
-## YT tutorial 1
+## YT tutorial 1 - CRUD API app
 
 https://www.youtube.com/watch?v=TIbL0VOE900
 
@@ -11,7 +10,7 @@ https://www.youtube.com/watch?v=TIbL0VOE900
 name: sveltekit-crud-demo  
 https://console.firebase.google.com/project/sveltkit-crud-demo/settings/general
 
-## YT tutorial 2 - ### sveltekit + firebase auth
+## YT tutorial 2 - sveltekit + firebase auth
 
 https://www.youtube.com/watch?v=8NlUTFppJkU&t
 
