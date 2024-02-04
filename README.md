@@ -1,6 +1,5 @@
 # Sveltekit & Firebase
 
-
 ## YT tutorial 1 - CRUD API app
 
 https://www.youtube.com/watch?v=TIbL0VOE900
@@ -18,3 +17,7 @@ https://www.youtube.com/watch?v=8NlUTFppJkU&t
 
 name: sveltekit-auth  
 https://console.firebase.google.com/project/sveltekit-auth-aac32/overview
+
+### docs
+
+https://firebase.google.com/docs/web/setup?hl=en
