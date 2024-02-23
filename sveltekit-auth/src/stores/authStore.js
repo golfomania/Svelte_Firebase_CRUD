@@ -24,5 +24,8 @@ export const authHandlers = {
 	},
 	updateEmail: async (email) => {
 		await updateEmail(auth, email);
+	},
+	updatePassword: async (password) => {
+		await updatePassword(auth, password);
 	}
 };
