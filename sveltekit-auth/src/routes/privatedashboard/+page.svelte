@@ -1,5 +1,7 @@
 <script>
 	import { authStore } from '../../stores/authStore.js';
+	import AuthReset from '../../components/AuthReset.svelte';
+
 	let email;
 	authStore.subscribe((value) => {
 		email = value?.currentUser?.email;
@@ -10,6 +12,7 @@
 	<div>
 		<h1>current user: {email}</h1>
 	</div>
+	<AuthReset />
 {:else}
 	<div>
 		<h1>loading...</h1>
